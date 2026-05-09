@@ -151,3 +151,4 @@ gh pr review {PR_NUMBER} --comment --body "审核意见..."
 - **先修复问题再 Approve**：若发现 🔴 必须修复的问题，应先帮用户修复代码，commit 并 push，再 Approve。
 - **保留原有逻辑**：审核时发现的改进建议如用户不要求修改，不要擅自修改代码。
 - **关联 Issue**：检查 PR body 是否包含 `Closes #xxx` 关联 issue。
+- **需要合并 PR**（判断是否已合并、解决冲突、`gh pr merge`、关闭关联 issue）：见 [`08-pr-merge.md`](08-pr-merge.md)。
