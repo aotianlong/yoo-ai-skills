@@ -15,5 +15,5 @@
   },
   "keywords": ["skills", "cursor", "claude", "codex", "agents"],
   "license": "MIT",
-  "files": ["bin", "config", "skills"]
+  "files": ["bin", "cli", "config", "skills"]
 }
