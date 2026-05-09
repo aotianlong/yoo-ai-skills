@@ -101,5 +101,5 @@ EOF
 
 创建完成后，询问用户：
 - 是否需要继续添加其他 issue？
-- 是否需要立即开始修复此 issue？（进入 Issue 修复流程 Step A）
+- 是否需要立即开始解决此 issue？（进入 Issue 解决流程 Step A）
 

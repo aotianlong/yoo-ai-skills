@@ -155,4 +155,3 @@ EOF
 ## 与其它分片的关系
 
 - 合并前代码质量、Approve：[`06-pr-review.md`](06-pr-review.md)
-- 父/子 issue、`Closes #父` 策略：[`07-sub-issues.md`](07-sub-issues.md)

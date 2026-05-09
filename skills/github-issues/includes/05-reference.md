@@ -18,7 +18,7 @@
 | `user-experience` | 用户体验 |
 | `data-integrity` | 数据完整性 |
 | `needs-clarification` | 描述不清晰，需要补充信息 |
-| `in-progress` | 正在修复中 |
+| `in-progress` | 正在解决 issue 中 |
 
 ### 解读后打标签规则（仅追加、不覆盖）
 

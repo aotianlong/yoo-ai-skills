@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """向 GitHub 发布「## 🔍 Issue 解读」评论（仅 **OPEN**；**防重复**）。
 
-解读正文在技能里定义为：**含可落地修复方案**（具体文件 + 改什么 + 如何验证）+ **相似/关联 OPEN issue 检索结论**（`gh search issues` 等），便于维护者在触发 AI 自动修复**前**预览方案并避免重复开工。内置 `INTERPRETATIONS` 应随 SKILL Step R5 / R2.5 迭代。
+解读正文在技能里定义为：**含可落地修复方案**（具体文件 + 改什么 + 如何验证）+ **相似/关联 OPEN issue 检索结论**（`gh search issues` 等），便于维护者在触发 AI 自动解决 issue **前**预览方案并避免重复开工。内置 `INTERPRETATIONS` 应随 SKILL Step R5 / R2.5 迭代。
 
 规则：
 - 仅当 issue **state 为 OPEN** 时才发帖；已关闭则 SKIP。
