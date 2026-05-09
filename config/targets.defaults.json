@@ -1,0 +1,17 @@
+{
+  "comment": "路径占位符：<home> 表示用户主目录；所有目标均为技能根目录（其下每个子目录为一个 skill）",
+  "targets": {
+    "cursor": {
+      "skillsRoot": "<home>/.cursor/skills",
+      "docs": "https://cursor.com/docs (Agent Skills)"
+    },
+    "claude": {
+      "skillsRoot": "<home>/.claude/skills",
+      "docs": "https://docs.anthropic.com (Claude Code skills)"
+    },
+    "codex": {
+      "skillsRoot": "<home>/.agents/skills",
+      "docs": "https://developers.openai.com/codex/skills"
+    }
+  }
+}

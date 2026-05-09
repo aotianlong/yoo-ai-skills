@@ -1,0 +1,19 @@
+{
+  "name": "yoo-ai-skills",
+  "version": "0.1.0",
+  "description": "将统一维护的 Agent Skills 分发到 Cursor、Claude Code、Codex 等工具的 skills 目录",
+  "type": "module",
+  "bin": {
+    "yoo-ai-skills": "./bin/yoo-ai-skills.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "sync": "node ./bin/yoo-ai-skills.mjs sync",
+    "list": "node ./bin/yoo-ai-skills.mjs list"
+  },
+  "keywords": ["skills", "cursor", "claude", "codex", "agents"],
+  "license": "MIT",
+  "files": ["bin", "config", "skills"]
+}
