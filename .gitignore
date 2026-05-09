@@ -1,1 +1,4 @@
 node_modules/
+
+# github-issues skill: local git worktrees (wt-{issue-id})
+.worktrees/
