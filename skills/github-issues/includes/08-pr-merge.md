@@ -48,7 +48,7 @@ gh pr view {PR_NUMBER} --repo aotianlong/container-house \
 
 ### Step M4：存在冲突时（`mergeStateStatus` 为 `DIRTY` 或 merge 报错冲突）
 
-在**主仓库根**或独立 worktree 中处理，避免污染无关分支：
+在**业务仓库根**（`git rev-parse --show-toplevel`，当前主工作树）中处理，避免污染无关分支：
 
 1. 检出 PR 头部分支（推荐）：
 

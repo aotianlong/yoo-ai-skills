@@ -6,7 +6,7 @@
 
 ### 默认：直接全量实现（用户未要求「先解读 / 先规划」时）
 
-当用户说以下任意形式，且**未**在同一任务中要求 **先解读**、**先分析再改**、**只规划不写代码**、**两步走**、**方案定了再改**、**输出规划等我确认** 等时，**应用本技能**并**直接进入**「分支优先」与阶段一～五中的实现（读 issue、必要截图/只读检索后，即可 `checkout`/worktree、改代码、push、`gh pr create`、Step D 评论），**无需**先单独走阶段零并等待用户对「解决规划」表态。**仅**指定单个 issue（如「解决 #123」）、且**未**要求「按优先级处理全部 / 扫描仓库」时，**可跳过阶段一～三**，从 **阶段四** Step A 起全量实现。
+当用户说以下任意形式，且**未**在同一任务中要求 **先解读**、**先分析再改**、**只规划不写代码**、**两步走**、**方案定了再改**、**输出规划等我确认** 等时，**应用本技能**并**直接进入**「分支优先」与阶段一～五中的实现（读 issue、必要截图/只读检索后，即可在仓库根主工作树 `checkout` 修复分支、改代码、push、`gh pr create`、Step D 评论），**无需**先单独走阶段零并等待用户对「解决规划」表态。**仅**指定单个 issue（如「解决 #123」）、且**未**要求「按优先级处理全部 / 扫描仓库」时，**可跳过阶段一～三**，从 **阶段四** Step A 起全量实现。
 
 触发语示例：
 - **`解决 #111`** / **`解决#111`**（`解决` 与 `#` 之间**可有空格也可无**；`#` 后为 issue 编号）/ `「解决 #123」` / `修 #123` / `处理 #123` / `搞定 #123`（口语里常省略 *issue* 一词）
@@ -19,7 +19,7 @@
 
 > **解决前**：若该 issue 下已有 **`## 🔍 Issue 解读`** 评论，**先通读其中「可执行修复方案」** 再改代码；发起人通常已用该段内容**预览过**解决思路，实现应尽量与之对齐（除非代码审查中发现方案有误，再在 issue 中说明调整）。
 
-> **分支优先（硬性）**：**在打开业务文件、编辑代码或执行任何 `git commit` 之前**，必须先完成 **从最新 `dev` 新建修复分支**（见下方「分支优先」与阶段四 Step A）。**默认**在 **`.worktrees/wt-{issue-id}`** 中完成检出与后续提交（见 **「Worktree 模式（默认）」**）；用户明确说 **不用 worktree** 时在主工作树执行 Step A。**禁止**留在当前任意检出分支（如本地已 ahead 的 `dev`、无关 `feature/…` 等）上直接提交为解决该 issue 所作的改动。**不得**「先改完再开分支」；若误已在错误分支上 commit，须按用户要求 **revert** 或 **cherry-pick 到正确分支**，不得将无关提交混入 PR。
+> **分支优先（硬性）**：**在打开业务文件、编辑代码或执行任何 `git commit` 之前**，必须先完成 **从最新 `dev` 新建修复分支**（见下方「分支优先」与阶段四 Step A），且须在 **当前项目仓库根的主工作树**（`git rev-parse --show-toplevel`）内操作。**禁止**留在当前任意检出分支（如本地已 ahead 的 `dev`、无关 `feature/…` 等）上直接提交为解决该 issue 所作的改动。**不得**「先改完再开分支」；若误已在错误分支上 commit，须按用户要求 **revert** 或 **cherry-pick 到正确分支**，不得将无关提交混入 PR。
 
 > **重要（完成定义）**：每个 issue（或每组相关 issues）解决完成后，**必须** `git push` 到远程并 **`gh pr create` 创建 Pull Request**（`--base dev`），供审阅与合并。**仅在本机 `git commit` 而未开 PR，不算完成**，须在对话结束前补齐 PR；若用户环境无法推送，须在回复中明确说明阻塞原因与待办（由谁 push / 开 PR）。
 
@@ -29,13 +29,13 @@
 
 ### 规划优先：两步走 + 阶段零（用户明确要求先解读 / 先规划时）
 
-用户在**同一任务**中明示 **先不要写代码**、**先解读**、**解读完再做**、**先给方案**、**两步走**、**规划通过后再改** 等时，**必须**先完成 **第 1 步** 与下方 **阶段零 Step Z1～Z3**（只读 + 输出「解决规划」+ **等待用户确认**），**禁止**在此期间 `git checkout -b`、`git worktree add`、改业务代码、`git commit`。用户确认后进入 **第 2 步**：与「默认」路径相同——分支优先 + 全量实现（阶段一或阶段四～五）。
+用户在**同一任务**中明示 **先不要写代码**、**先解读**、**解读完再做**、**先给方案**、**两步走**、**规划通过后再改** 等时，**必须**先完成 **第 1 步** 与下方 **阶段零 Step Z1～Z3**（只读 + 输出「解决规划」+ **等待用户确认**），**禁止**在此期间 `git checkout -b`、改业务代码、`git commit`。用户确认后进入 **第 2 步**：与「默认」路径相同——分支优先 + 全量实现（阶段一或阶段四～五）。
 
 除用户改口为「直接改」「跳过规划」外，**不可**把第 1、2 步合并为一步。
 
 | 步骤 | 做什么 | **禁止** |
 |------|--------|----------|
-| **第 1 步** | **需求分析**：读 issue、评论、截图；仓库内 **只读** 检索（`rg`、读文件、`gh issue view`）。在对话中输出 **解决方案**（问题摘要、根因假设、改动范围与主要路径、步骤、风险、验证方式）。 | **禁止** 修改业务代码、**禁止** `git checkout -b`、**禁止** `git worktree add`、**禁止** `git commit`、**禁止** 写迁移/跑会改库的脚本（可读的 `gh` 查询除外）。 |
+| **第 1 步** | **需求分析**：读 issue、评论、截图；仓库内 **只读** 检索（`rg`、读文件、`gh issue view`）。在对话中输出 **解决方案**（问题摘要、根因假设、改动范围与主要路径、步骤、风险、验证方式）。 | **禁止** 修改业务代码、**禁止** `git checkout -b`、**禁止** `git commit`、**禁止** 写迁移/跑会改库的脚本（可读的 `gh` 查询除外）。 |
 | **第 2 步** | **用户明确确认后**（如「可以开始」「通过」「按这个做」）：再执行「分支优先」与阶段一～五中的编码、push、PR、issue 评论等。 | — |
 
 > **衔接**：第 1 步与 **阶段零**（Step Z1～Z3）同一套产出与停损规则；第 2 步从 **阶段零 Step Z4** 起进入阶段一或阶段四。
@@ -80,7 +80,7 @@
 #### Step Z3：等待用户确认（硬性，仅规划优先）
 
 - 输出规划后，**明确停止**，并提示用户回复「通过」「可以开始」或提出修改意见。**本步对应「两步走」第 1 步结束**：此时仍属「只分析与方案」，**不得开始写代码**。
-- **在用户确认前禁止**（与两步走第 1 步表格一致）：`git checkout -b`、`git worktree add`、修改业务代码、`git commit`、给 issue 打 `in-progress` 等「进入解决」动作（读取 issue、`gh issue view`、只读搜索除外）。
+- **在用户确认前禁止**（与两步走第 1 步表格一致）：`git checkout -b`、修改业务代码、`git commit`、给 issue 打 `in-progress` 等「进入解决」动作（读取 issue、`gh issue view`、只读搜索除外）。
 - 若用户要求调整规划，修订后再次等待确认。
 
 #### Step Z4：用户通过后
@@ -94,20 +94,9 @@
 
 ---
 
-### Worktree 模式（默认）
+### 主工作树（唯一）
 
-**默认启用**：用户**未**表示不用 worktree 时，本组解决 issue 的 **编码、`git commit`、`git push`** 均在主仓库根下的 worktree 目录中完成，**避免与主工作树并行分支互相干扰**。
-
-| 项目 | 约定 |
-|------|------|
-| **主仓库根** | `REPO_ROOT="$(git rev-parse --show-toplevel)"`（须为保存 `.git` 的主工作树，不是 Cursor 任意子目录） |
-| **worktree 路径** | `$REPO_ROOT/.worktrees/wt-{issue-id}`：单 issue 为 `wt-123`；同组多 issue 为 `wt-123-456`（编号顺序与分支 `fix/123-456` 一致） |
-| **何时创建** | 在**规划优先**路径下：仅在与两步走 **第 2 步**或阶段零 Step Z4 通过之后，随阶段四 Step A 执行。**默认直接实现**路径下：完成 issue 阅读与必要只读检索后即可随阶段四 Step A 创建。**任何路径**下，**禁止**在「规划优先」第 1 步 / Step Z3 未通过时 `git worktree add`。 |
-| **何时删除** | **`gh pr create` 已成功**（且需要时已 `git push`）后，回到 **主仓库根** 执行 `git worktree remove`，再进入 Step D / 下一组 |
-
-**关闭 worktree**：用户明确说 **不用 worktree**、**不用 worktree 模式**、**在主仓库（主工作树）直接改**、**当前目录修**（指不要单独挂 worktree）等时，**不要**执行 `git worktree add`，改用阶段四 Step A 中「主工作树」命令块。
-
-**残留目录**：若 `.worktrees/wt-…` 已存在（上次中断），先 `git worktree remove <路径>`（必要时 `--force`）或 `git worktree prune` 后再 `add`。`remove` 前若提示未提交变更，须与用户确认丢弃或先提交，**禁止**不经确认强行 `--force` 导致丢改。
+本技能**不使用** `git worktree`。解决 issue 时的 **`git commit`、`git push`、打开业务文件编辑** 均在 **当前项目仓库根的主工作树**（`REPO_ROOT="$(git rev-parse --show-toplevel)"`）内完成：先 `cd "$REPO_ROOT"`，再按阶段四 Step A 从最新 `dev` 检出 `fix/...` 分支后继续。**禁止**在独立 `.worktrees/…` 目录中挂载副本；若本地曾因旧版技能留下 `.worktrees/`，可经用户确认后 `git worktree remove` / `git worktree prune` 清理，但**新建 issue 修复流程不再 `git worktree add`**。
 
 ---
 
@@ -310,8 +299,8 @@ EOF
 
 #### 分支优先（执行顺序）
 
-1. **先**完成下方 Step A：`dev` → 获取最新（`fetch`/`pull`）→ **默认** `git worktree add .worktrees/wt-{issue-numbers}` 并 `cd` 至该目录；不用 worktree 时在主工作树 `checkout -b fix/...`。然后打 `in-progress` 标签。
-2. **再**进行 Step B0 及之后的验证与代码修改、`git commit`（**路径为 worktree 目录**，除非用户关闭了 worktree）。
+1. **先**完成下方 Step A：在**仓库根主工作树**内 `fetch`/`pull` 最新 `dev`，再 `checkout -b fix/…`，然后打 `in-progress` 标签。
+2. **再**进行 Step B0 及之后的验证与代码修改、`git commit`（当前目录即为仓库根下的修复分支工作区）。
 
 若跳过 Step A 已开始改代码，**立即停下**：保存或 stash 改动 → 执行 Step A → 再应用改动。
 
@@ -331,32 +320,21 @@ exit(0 if 'in-progress' in labels else 1)
      --description "正在解决 issue 中"
 ```
 
-**A1. 从 dev 创建分支（默认：worktree）**
+**A. 从 dev 创建分支（主工作树，唯一路径）**
 
 须在与 issue 无关的干净起点上创建；先 `fetch`/`pull` 保证基于最新 `origin/dev`，且**不要**把非本 issue 的提交算进本分支。
 
-将 `{issue-numbers}` 替换为实际编号（如 `123` 或 `123-456`），`WT` 与上文「Worktree 模式」一致（`wt-{issue-numbers}`，**无** `fix/` 前缀）。
+将 `{issue-numbers}` 替换为实际编号（如 `123` 或 `123-456`），分支名为 `fix/{issue-numbers}`。
 
 ```bash
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "$REPO_ROOT"
 git fetch origin dev
-mkdir -p .worktrees
-WT=".worktrees/wt-{issue-numbers}"
-BR="fix/{issue-numbers}"
-git worktree add "$WT" -b "$BR" origin/dev
-cd "$WT"
-```
-
-> **禁止**：在 `git worktree add` / `git checkout -b` 之前对业务代码做任何修改或 `git commit`（读取 issue、运行 `gh issue view` 等除外）。
-
-**A2. 主工作树（仅当用户不用 worktree）**
-
-```bash
-cd "$(git rev-parse --show-toplevel)"
 git checkout dev && git pull origin dev
 git checkout -b "fix/{issue-numbers}"
 ```
+
+> **禁止**：在 `git checkout -b` 之前对业务代码做任何修改或 `git commit`（读取 issue、运行 `gh issue view` 等除外）。
 
 **给本组所有 issue 打 `in-progress` 标签**：
 
@@ -454,14 +432,6 @@ EOF
 ```
 
 - **单条 issue 解决**：同样走独立分支 + PR，勿把「已 commit 到 dev」当作交付终点（除非用户明确要求不建 PR）。
-- **worktree 模式**：在 **`gh pr create` 成功**后，在**主仓库根**删除本组 worktree（`git push` 可在 worktree 目录内执行）：
-
-```bash
-cd "$(git rev-parse --show-toplevel)"
-git worktree remove ".worktrees/wt-{issue-numbers}"
-```
-
-若当前 shell 仍位于已删除的 worktree 路径，应先 `cd` 到主仓库根再执行后续 `gh issue comment` 等。移除失败时按「Worktree 模式（默认）」处理未提交变更或经用户确认后 `--force`。
 - PR 创建成功后，移除本组所有 issue 的 `in-progress` 标签：
 
 ```bash
