@@ -14,12 +14,13 @@
 
 ## 确认规则（与 [`SKILL.md`](../SKILL.md) 总规则对齐）
 
-| 操作 | 是否需先征得用户确认 |
-|------|----------------------|
-| `gh gist list`、`gh gist view`（及 `-w` 仅打开网页） | **否**，只读 |
-| `gh gist create`、`gh gist edit`、`gh gist delete`、`gh gist rename`、`gh gist clone`（会在本地建目录） | **是**，除非用户已说「直接执行」「不用确认」「跳过规划」等 |
+| 操作 | 默认 |
+|------|------|
+| `gh gist list`、`gh gist view`（及 `-w` 仅打开网页） | 只读，无需停顿 |
+| `gh gist create`、`gh gist edit`、`gh gist rename`、`gh gist clone` | **默认直接执行**；同条回复用一两句说明「公开/secret、描述、路径」即可。**仅在**参数不完整或用户**明确要求先发预览**时再停顿 |
+| `gh gist delete` | **须明确目标 gist ID/URL**；默认交互确认。脚本化可用 `--yes`，**仅当用户明确要求删除该 gist 时**使用 |
 
-执行**变更前**在对话中说明：将创建/修改的 gist **公开还是 secret**、**描述**、涉及 **文件路径**；删除前明确 **gist ID 或 URL**。`gh gist delete` 默认会交互确认；自动化场景可用 `--yes`，**仅在用户明确授权删除时**使用。
+执行变更时建议在对话中点名：**公开还是 secret**、**描述**、**文件路径**；删除前核对 **gist ID 或 URL**。
 
 ## Gist 标识
 
