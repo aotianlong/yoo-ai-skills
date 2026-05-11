@@ -1,6 +1,6 @@
 ---
 name: github-issues
-description: **默认直接执行**：创建/编辑 issue、发帖、`gist` 写操作、从文档批量建 issue、「解决 #xxx」等，信息足够则**立刻动手**，不要求先发长篇计划再等一句确认；仅在需求含糊或用户**明确要求先看草案**时停顿。**列出/查看 Issues（只读）**：当用户说「列出 issues」「issue 列表」「有哪些 open issue」「按标签/负责人筛 issues」等时，按 `includes/07-list-issues.md` 使用 `gh issue list` / `gh issue view`，可不经确认。**GitHub Gist**：当用户说「创建/列出/查看/编辑/删除 gist」「gist 克隆」等时，按 `includes/09-github-gist.md` 使用 `gh gist`；其中 **list/view** 为只读。**create/edit/delete/rename/clone** **默认直接执行**，可在同条回复用一两句说明动作；仅在参数不完整或用户要求先发预览时再停顿。将 Word 文档（.docx）中的问题/需求截图分析后，批量创建为 GitHub Issues，附带截图和来源文档链接。当用户说"把 xx 文件转换成 issues"、"从文档创建 issues"、"把文档发布到 github" 时自动应用。创建完 issues 后，当用户要求"逐个解决 issues"时，为每组相关 issues 创建独立分支以解决对应 issue；**解决完成后必须 push 并创建 PR（目标分支一般为 dev）供代码审阅，禁止仅本地 commit 即视为完成**；并在各 issue 评论中写解决过程总结与 PR 链接。**合并 GitHub PR**：当用户说「合并 PR」「merge PR」「把 PR #xxx 合进去」等时，按 `includes/08-pr-merge.md`**先查是否已合并**、必要时**解决冲突**再 `gh pr merge`，合并后**校验并关闭关联 issue**。**解决具体编号 issue（触发本技能）**：当用户说 **「解决 #111」**、**「解决#111」**、**「解决 #123」** 等、`修 #xxx`、**「处理 #xxx」「搞定 #xxx」**、或带 issue URL /「解决 issue #xxx」时：**默认不强制「先给规划再等确认」**——若用户**未**在同一任务中要求 **先解读 / 先分析再改 / 只规划不写代码 / 两步走 / 方案通过再说** 等，则在读完 issue、必要时只读检索后，**直接进入** `03` 中的分支、编码、push、PR、issue 评论等**全量实现流程**；**若用户明确要求先解读或先规划**，则按 `03` 的「规划优先（两步走）+ 阶段零」执行：**第 1 步**仅只读分析与输出方案（禁止写代码、`git checkout -b`、commit），**第 2 步**待用户确认后再编码。带 **issue URL** 同此。**用户确认、进入编码阶段后**：须 `cd` 到**当前项目仓库根**（`git rev-parse --show-toplevel`），从最新 `dev` 新建修复分支（见 `includes/03-issue-fix.md`「分支优先」），在**主工作树**内完成编码与提交；禁止在错误的检出分支上直接 commit 本 issue 的改动，**结束时必须创建 PR**。**不使用** `git worktree`，始终在单一工作树中操作。当用户说"帮我添加 issue"、"帮我创建 issue"、"新建一个 issue"、"添加一个需求"、"提一个 bug" 等时，进入口述需求创建 Issue 流程。当用户说"解读 issue"、"分析 issue"、"帮我看看这个 issue"、"解析所有 issues"、"批量解读"、"跳过已解读"、"解读一下 #xxx"、"解读 #xxx"、"看一下 #xxx"、"分析 #xxx"、"解读这个 #xxx"、"帮我解读 #xxx"（其中 xxx 为 issue 编号）等时，进入 Issue 解读流程（**仅 OPEN**；须**检索类似 OPEN issue**（Step R2.5）并写入解读；解读正文须含**可落地修复方案**；**解读后 Step R6 仅追加标签**，已有标签视为故意、禁止覆盖；**默认完成分析后直接 `gh issue comment`**，不必先在对话全文预览求确认（见 `includes/02-issue-interpretation.md` Step R5）。单条走 Step R1～R6；批量见「批量解读与全仓库扫描」），写入 issue 评论（或运行本技能目录下脚本发帖）。
+description: **默认直接执行**：创建/编辑 issue、发帖、`gist` 写操作、从文档批量建 issue、「解决 #xxx」等，参数与意图清楚则**立刻动手**。可落地的修改路径写在 issue **`## 🔍 Issue 解读`**（**解读贴**）；若要调整方向，在 issue 上追加或修订评论。**列出/查看 Issues（只读）**：「列出 issues」「按标签筛」等 → `includes/07-list-issues.md`、`gh issue list` / `gh issue view`。**GitHub Gist**：`includes/09-github-gist.md`、`gh gist`；list/view 只读；create/edit/delete/rename/clone **默认直接执行**，参数不全或用户要求先发预览时再停顿。Word（.docx）批量建 issue、口述建 issue、合并 PR、审核 PR 等均按对应 include。逐个解决 issues：**必须 push + `gh pr create`（base `dev`）**，禁止仅本地 commit；issue 评论附 PR 链接。**解决 #xxx / issue URL**：通读 issue、评论及已有解读贴（若有），按「可执行修复方案」或自拟等价方案，**直接**走 `03` 分支→编码→PR→评论。「先解读再解决」：先发 `02` Step R5，**随即**接 `03`。用户明示「只解读 / 别写代码」：仅 `02`。含糊、缺编号、或用户**要求先看草案**时再停顿。**编码**：仓库根主工作树、`dev` 建新分支（见 `03`），**必须 PR**，不用 `git worktree`。解读触发语 → `02`（OPEN、R2.5、可落地方案、R6 只追加标签、默认 `gh issue comment`，Step R5）。
 ---
 
 # Doc to GitHub Issues
@@ -14,7 +14,7 @@ description: **默认直接执行**：创建/编辑 issue、发帖、`gist` 写�
 | 前置条件、测试环境 URL | [`includes/00-common.md`](includes/00-common.md) |
 | 从 Word 批量创建 Issues（Step 0 简述与直接执行 + 1～10） | [`includes/01-docx-to-issues.md`](includes/01-docx-to-issues.md) |
 | Issue 解读、批量扫描/发帖、R1～R6（含解读后打标签） | [`includes/02-issue-interpretation.md`](includes/02-issue-interpretation.md) |
-| Issue 解决、**默认直接全量实现**、**规划优先（可选）**、分支、PR、阶段一至五 | [`includes/03-issue-fix.md`](includes/03-issue-fix.md) |
+| Issue 解决、**默认按解读贴/上下文直接全量实现**、分支、PR、阶段一至五 | [`includes/03-issue-fix.md`](includes/03-issue-fix.md) |
 | 口述需求创建 Issue（Step V0 简述 + V1～V6） | [`includes/04-voice-create-issue.md`](includes/04-voice-create-issue.md) |
 | 标签表、防重复规则、注意事项 | [`includes/05-reference.md`](includes/05-reference.md) |
 | PR 审核、Approve、Request Changes | [`includes/06-pr-review.md`](includes/06-pr-review.md) |
@@ -32,12 +32,12 @@ description: **默认直接执行**：创建/编辑 issue、发帖、`gist` 写�
 
 ## 给 AI 的指引
 
-0. **默认直接执行（本技能总规则）**：凡将调用 `gh` 创建/编辑 issue、发评论、跑发帖脚本、上传资源并批量建 issue、或执行 **`09-github-gist.md`** 中的写操作，**在参数与意图明确时应立即执行**，可在同条回复用两三句交代范围。**不必**先贴草案再等「可以」。仅当仓库/编号不明、需求含糊、或用户**明确要求先审预览**时停顿。**只读**（如 `gh issue list`、`gh gist list`、`gh gist view`、`gh issue view`）不涉及发帖确认问题。
+0. **默认直接执行**：写操作（`gh issue`、`gist` 发帖/创建等）在参数与意图明确时**立即执行**；同条回复可两三句交代范围。仅当仓库/编号不明、需求含糊、或用户**要求先审预览**时停顿。
 1. 根据用户意图**精读上表中对应的 include 文件**，不必默认读完所有分片。用户只要**罗列或筛选** issues 时，打开 **`07-list-issues.md`**；**管理 Gist** 时打开 **`09-github-gist.md`**。
 2. 任务跨多阶段时（例如「先解读 #155 再解决」），依次打开 `02-issue-interpretation.md` 与 `03-issue-fix.md`。
 3. 创建 issue 选标签时查阅 `05-reference.md`。
 4. **解读 issue 后**按 `02` 中 Step R6 **只追加**标签；**已有标签不删不改**（细则见 `05-reference.md`「解读后打标签规则」）。
-5. **解决 issue**：用户**未**要求先解读/先规划/两步走时，按 `03` **直接**进入分支与全量实现（读 issue、必要只读检索后即编码、PR）；用户**明确要求**先解读、先给方案再改、只分析、两步走等时，按 `03`「规划优先」**先**完成分析与方案并**待确认**后再改动。**若 issue 不清晰，任何路径下均须先提问**，不得猜测后硬编码。
+5. **解决 issue**：按 `03`，读完 issue、解读贴（若有）、做完必要只读检索后**直接**分支、编码、PR；方案写在解读贴。「先解读再解决」：发帖后立即续跑 `03`。明示只要解读则仅 `02`。issue 不清晰须先提问。
 6. **解决 issue 后**：按 `03` 完成 **push + `gh pr create`（base `dev`）**；在 issue 评论中写总结并附 PR 链接。**不得**在仅本地提交后结束任务（无法推送时须说明原因）。**始终在仓库根主工作树**内编码与提交（细则见 `03`「主工作树」）。
 7. **审核 PR 时**：精读 `06-pr-review.md`；若发现 🔴 必须修复问题，先帮用户修复代码并 push，再执行 Approve；无阻塞问题则直接 Approve。
 8. **合并 PR 时**：精读 `08-pr-merge.md`；**先**用 `gh pr view --json mergedAt` 判断是否已合并；有冲突则按该文件合并 base、解决后 push，再 `gh pr merge`；合并后根据 `closingIssuesReferences` 校验，对仍 OPEN 的关联 issue 执行 `gh issue close` 并评论说明。
