@@ -1,3 +1,8 @@
+---
+name: commit
+description: Use this skill when the user types `git commit`, `/commit`, or asks to commit changes.
+---
+
 # commit
 
 Use this skill when the user types `git commit`, `/commit`, or asks to commit changes.
