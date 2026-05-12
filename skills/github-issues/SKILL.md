@@ -1,6 +1,7 @@
 ---
 name: github-issues
-description: **默认直接执行**：创建/编辑 issue、发帖、`gist` 写操作、从文档批量建 issue、「解决 #xxx」等，参数与意图清楚则**立刻动手**。可落地的修改路径写在 issue **`## 🔍 Issue 解读`**（**解读贴**）；若要调整方向，在 issue 上追加或修订评论。**列出/查看 Issues（只读）**：「列出 issues」「按标签筛」等 → `includes/07-list-issues.md`、`gh issue list` / `gh issue view`。**GitHub Gist**：`includes/09-github-gist.md`、`gh gist`；list/view 只读；create/edit/delete/rename/clone **默认直接执行**，参数不全或用户要求先发预览时再停顿。Word（.docx）批量建 issue、口述建 issue、合并 PR、审核 PR 等均按对应 include。逐个解决 issues：**必须 push + `gh pr create`（base `dev`）**，禁止仅本地 commit；issue 评论附 PR 链接。**解决 #xxx / issue URL**：通读 issue、评论及已有解读贴（若有），按「可执行修复方案」或自拟等价方案，**直接**走 `03` 分支→编码→PR→评论。「先解读再解决」：先发 `02` Step R5，**随即**接 `03`。用户明示「只解读 / 别写代码」：仅 `02`。含糊、缺编号、或用户**要求先看草案**时再停顿。**编码**：仓库根主工作树、`dev` 建新分支（见 `03`），**必须 PR**，不用 `git worktree`。解读触发语 → `02`（OPEN、R2.5、可落地方案、R6 只追加标签、默认 `gh issue comment`，Step R5）。
+description: >
+  **默认直接执行**：创建/编辑 issue、发帖、`gist` 写操作、从文档批量建 issue、「解决 #xxx」等，参数与意图清楚则**立刻动手**。可落地的修改路径写在 issue **`## 🔍 Issue 解读`**（**解读贴**）；若要调整方向，在 issue 上追加或修订评论。**列出/查看 Issues（只读）**：「列出 issues」「按标签筛」等 → `includes/07-list-issues.md`、`gh issue list` / `gh issue view`。**GitHub Gist**：`includes/09-github-gist.md`、`gh gist`；list/view 只读；create/edit/delete/rename/clone **默认直接执行**，参数不全或用户要求先发预览时再停顿。Word（.docx）批量建 issue、口述建 issue、合并 PR、审核 PR 等均按对应 include。逐个解决 issues：**必须 push + `gh pr create`（base `dev`）**，禁止仅本地 commit；issue 评论附 PR 链接。**解决 #xxx / issue URL**：通读 issue、评论及已有解读贴（若有），按「可执行修复方案」或自拟等价方案，**直接**走 `03` 分支→编码→PR→评论。「先解读再解决」：先发 `02` Step R5，**随即**接 `03`。用户明示「只解读 / 别写代码」：仅 `02`。含糊、缺编号、或用户**要求先看草案**时再停顿。**编码**：仓库根主工作树、`dev` 建新分支（见 `03`），**必须 PR**，不用 `git worktree`。解读触发语 → `02`（OPEN、R2.5、可落地方案、R6 只追加标签、默认 `gh issue comment`，Step R5）。
 ---
 
 # Doc to GitHub Issues
