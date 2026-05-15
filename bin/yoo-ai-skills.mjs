@@ -20,7 +20,7 @@ function printHelp() {
   yoo-ai-skills sync [选项]
 
 sync 选项:
-  --targets <a,b>   仅同步列出目标，默认全部。可选: cursor, claude, codex
+  --targets <a,b>   仅同步列出目标，默认全部。可选: cursor, claude, codex, agents
   --skill <name>    仅同步某一个 skill 目录名
   --method <m>      copy（复制）或 symlink（符号链接），默认 symlink
   --dry-run         仅打印将要执行的操作
@@ -124,7 +124,7 @@ async function cmdList() {
 
 async function cmdSync(opts) {
   const targetsMeta = await loadTargetsMeta();
-  const allNames = ["cursor", "claude", "codex"];
+  const allNames = Object.keys(targetsMeta);
   let names = opts.targets?.length ? opts.targets : allNames;
   const unknown = names.filter((n) => !targetsMeta[n]);
   if (unknown.length) throw new Error(`未知 targets: ${unknown.join(", ")}；可用: ${allNames.join(", ")}`);

@@ -10,8 +10,12 @@
       "docs": "https://docs.anthropic.com (Claude Code skills)"
     },
     "codex": {
+      "skillsRoot": "<home>/.codex/skills",
+      "docs": "https://platform.openai.com/docs/codex"
+    },
+    "agents": {
       "skillsRoot": "<home>/.agents/skills",
-      "docs": "https://developers.openai.com/codex/skills"
+      "docs": "https://docs.anthropic.com (Claude Code agents)"
     }
   }
 }

@@ -17,7 +17,8 @@ description: >-
 2. 运行 `yoo-ai-skills sync`，将技能同步或链接到各工具默认目录：
    - Cursor：`~/.cursor/skills/<slug>/`
    - Claude Code：`~/.claude/skills/<slug>/`
-   - Codex：`~/.agents/skills/<slug>/`
+   - Codex：`~/.codex/skills/<slug>/`
+   - Agents（通用）：`~/.agents/skills/<slug>/`
 3. 在对应工具中按需显式唤起 skill，或依赖 `description` 中的触发词进行隐式匹配（视工具能力而定）。
 
 ## 维护注意
