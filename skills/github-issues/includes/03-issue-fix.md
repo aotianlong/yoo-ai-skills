@@ -6,7 +6,7 @@
 
 ### 默认：直接全量实现（按解读贴或上下文方案）
 
-当用户说以下任意形式且**未**明示「**只要解读 / 不要改代码 / 只发帖**」时，**应用本技能**并**直接进入**「分支优先」与阶段一～五：**先**通读 issue、评论及已有 **`## 🔍 Issue 解读`**（若有），按「可执行修复方案」落地；无解读贴则自拟等价方案并执行。读完上下文、必要截图/只读检索后，在仓库根主工作树 `checkout` 修复分支、改代码、push、`gh pr create`、Step D 评论。
+当用户说以下任意形式且**未**明示「**只要解读 / 不要改代码 / 只发帖**」时，**应用本技能**并**直接进入**「分支优先」与阶段一～五：**先**通读 issue、评论及已有 **`## 🔍 Issue 解读`**（若有），按「可执行修复方案」落地；无解读贴则自拟等价方案并执行。读完上下文后，**按 [`10-read-issue-attachments.md`](10-read-issue-attachments.md) 读取截图/附件**（`user-attachments` 须 `gh` token），再做必要只读检索；随后在仓库根主工作树 `checkout` 修复分支、改代码、push、`gh pr create`、Step D 评论。
 
 同一任务若包含「**先解读再解决**」：按 `02` 发解读贴（Step R5）后**紧接着**进入本节。**仅**指定单个 issue（如「解决 #123」）、且**未**要求「按优先级处理全部 / 扫描仓库」时，**可跳过阶段一～三**，从 **阶段四** Step A 起全量实现。
 
@@ -25,7 +25,7 @@
 
 > **重要（完成定义）**：每个 issue（或每组相关 issues）解决完成后，**必须** `git push` 到远程并 **`gh pr create` 创建 Pull Request**（`--base dev`），供审阅与合并。**仅在本机 `git commit` 而未开 PR，不算完成**，须在对话结束前补齐 PR；若用户环境无法推送，须在回复中明确说明阻塞原因与待办（由谁 push / 开 PR）。
 
-> **PR 要求**：标题与正文说明问题与改动；body 中使用 `Closes #xxx`（或 `Fixes`）关联 issue；创建后在对应 issue 下评论贴上 **PR 链接**（见 Step D）。
+> **PR 要求**：标题与正文说明问题与改动；body 中使用 `Closes #xxx`（或 `Fixes`）关联 issue；创建后在对应 issue 下评论贴上 **PR 链接** 与 **AI 会话 ID**（见 `00-common.md`、`Step D`）。
 
 ---
 
@@ -339,7 +339,24 @@ gh issue close {ISSUE_NUMBER} --repo aotianlong/container-house
 
 #### Step B：落实解决方案
 
-在代码库中定位相关文件，落实解决方案。commit 信息格式：
+在代码库中定位相关文件，落实解决方案。
+
+**`[文案审校] flows-table` 类 issue 额外约束（共享会话文案）**
+
+Deal / 议价 **Messenger 会话**（Message Session 列、`useMessengerMessage`）中的系统消息**不分查看者角色**；买卖方同屏见同一句。落地时：
+
+- ❌ 勿在 `useMessengerMessage.ts` 用 `p.isSeller` / `p.isBuyer` 切换同一条 `messageKey` 的文案
+- ❌ 勿为 Deal 会话 smart 模板增加 `title-merchant` / `title-customer` 等分角色键
+- ❌ 勿把审校 Todo 里「商户 Session 第二人称 *your account*」原样搬进 Messenger（应改为中性 *the seller* 等，与 `deal_manually_completed` 一致）
+- ✅ Notifications / Email 可按 `.customer` / `.merchant` 分收件方；Session 与铃铛/邮件**分开改**
+
+改完后可跑：`rg "title-merchant|p\.isSeller" web2/src/composables/useMessengerMessage.ts web2/locales`
+
+**Messenger smart 义务句**：`messenger-message.yml` 的 `smart.*`（如 `drop-off-notice-uploaded`、`after-provide-container-numbers`）须用 **has to**，**勿**改为 must；审校 Todo 若写「has to → must」须忽略。见 flows-table skill「Messenger smart 义务措辞：has to」。
+
+细则见仓库 `.claude/skills/flows-table-copy-review-issues/SKILL.md`「共享会话文案不分角色」。
+
+commit 信息格式：
 
 ```
 fix: 问题简述
@@ -383,7 +400,7 @@ gh issue edit {ISSUE_NUMBER} --repo aotianlong/container-house --remove-label "i
 
 #### Step D：在 Issue 中写解决总结
 
-每个 issue 添加评论：
+每个 issue 添加评论。**发帖前**按 `00-common.md`「AI 会话 ID」解析当前会话 UUID（`{AGENT_SESSION_ID}`、`{WORKSPACE_SLUG}`）；若上下文已提供 UUID 则直接用，勿编造。
 
 ```bash
 gh issue comment {ISSUE_NUMBER} --repo aotianlong/container-house --body "$(cat <<'EOF'
@@ -395,6 +412,10 @@ gh issue comment {ISSUE_NUMBER} --repo aotianlong/container-house --body "$(cat 
 - `path/to/file` — 具体改动
 
 **PR**：https://github.com/aotianlong/container-house/pull/{PR_NUMBER}
+
+**AI 会话 ID**：`{AGENT_SESSION_ID}`
+
+**Transcript**（续修时让 AI 读取）：`~/.cursor/projects/{WORKSPACE_SLUG}/agent-transcripts/{AGENT_SESSION_ID}/{AGENT_SESSION_ID}.jsonl`
 EOF
 )"
 ```

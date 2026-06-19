@@ -77,38 +77,16 @@ gh issue list --repo aotianlong/container-house --state open --limit 150 \
 
 > 若检索结果为空或仅弱相关，解读评论中仍应明确写一句 **「未发现明显重叠的 OPEN issue」**（或等价表述），表示已做过这一步。
 
-**Step R3：分析截图（如有）**
+**Step R3：分析截图与附件（如有）**
 
-如果 issue body 或评论中包含图片（`![...](url)` 格式），按以下顺序尝试获取：
+若 issue body 或评论含图片 / 附件，**必须**按 [`10-read-issue-attachments.md`](10-read-issue-attachments.md) 执行，摘要如下：
 
-**方式 A（优先）：用 playwright-cli 打开并截图**
+1. **优先**：`gh auth token` + `curl -H "Authorization: Bearer …"` 下载 `github.com/user-attachments/...`（裸 `curl`/`WebFetch` 会 404 或超时，**不代表读不到**）。
+2. 或运行 `~/.claude/skills/github-issues/scripts/download_issue_attachments.sh <issue#>`，再对 `/tmp/issue-<n>-attachments/` 内文件用 **Read**。
+3. 若同 issue 有 HTML/表格附件，**一并下载并阅读**（大表比纯截图更完整）。
+4. **备用**：`playwright-cli`；**勿**把 `WebFetch` 当首选。
 
-直接让浏览器访问图片 URL，绕过 HTTP 客户端的限制（如 500 错误、签名过期、重定向等），通常成功率最高：
-
-```bash
-playwright-cli open "https://图片URL"
-playwright-cli screenshot --filename=/tmp/issue-screenshot.png
-playwright-cli close
-```
-
-然后用 Read 工具读取 `/tmp/issue-screenshot.png` 进行图片分析。
-
-**方式 B（备用）：curl 直接下载**
-
-如果 playwright-cli 不可用或图片 URL 是简单公开链接，可用 curl：
-
-```bash
-IMG_URL="https://..."
-curl -L "$IMG_URL" -o /tmp/issue-screenshot.png
-```
-
-然后用 Read 工具读取 `/tmp/issue-screenshot.png` 进行图片分析。
-
-**方式 C（最后备用）：WebFetch 直接读取**
-
-若以上均无法访问，尝试用 WebFetch 工具直接抓取 URL（适用于普通 PNG/JPG 公开链接）。
-
-读取到图片后，重点分析：
+读取到图片/附件后，重点分析：
 - 识别截图中标注的问题区域（红色箭头、红色文字、手写批注）
 - 识别页面路径（面包屑导航、URL、标签页标题）
 - 识别错误提示、异常状态、UI 截断/溢出现象
