@@ -1,0 +1,11 @@
+interface:
+  display_name: "Bitwarden Secrets"
+  short_description: "Securely retrieve credentials from Bitwarden MCP"
+  default_prompt: "Use $bitwarden-secrets to retrieve the required credential securely."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "bitwarden"
+      description: "Bitwarden vault access"
+policy:
+  allow_implicit_invocation: true
