@@ -36,6 +36,20 @@ description: >-
 
 仓库内首选 **`./yoo deploy`**，替代手工 rsync + 远端 compose。与 `scripts/bootstrap-server.sh` / `scripts/deploy.sh` 可并存，日常以 CLI 为准；生产 Traefik 栈以 **`docker-compose.prod.yml` + `.env.production`** 为准。
 
+### 0. Rails 自动加载检查（Rails 项目硬门禁）
+
+若项目根目录存在 `bin/rails` 与 `config/application.rb`，**部署流程的第一个动作**必须是在项目根目录运行：
+
+```bash
+bundle exec rails zeitwerk:check
+```
+
+- 检查必须早于代码同步、构建、迁移、PM2/Docker 重启或停止现有服务；不要先中断仍健康的线上进程。
+- 使用与待部署应用一致的 Ruby 版本、gemset 与依赖；项目通过 RVM/asdf 等管理 Ruby 时，先激活对应环境。
+- 命令非零退出或出现 Zeitwerk 错误时立即停止部署，先修复文件路径与常量名映射，再重新运行检查。
+- 特别核对 acronym 映射：例如配置 `inflect.acronym 'API'` 后，`api_error.rb` 应定义 `APIError`，而不是 `ApiError`。
+- 非 Rails 项目跳过本项，继续执行对应技术栈的发版前检查。
+
 ### 1. 生成本地 `.env.production`
 
 ```bash
@@ -95,6 +109,7 @@ YOO_DEPLOY_VITE_API_URL=https://api.<DOMAIN>
 
 ## 发版前检查（本地）
 
+- Rails（存在 `bin/rails` 与 `config/application.rb`）：首先运行 `bundle exec rails zeitwerk:check`；失败则停止发版
 - 后端：`alembic heads` 无多个 head；若有则先在本地 `alembic merge` 再发版（见坑8）
 - 依赖：`backend/pyproject.toml` / `uv.lock` 已包含新增依赖
 - 前端：含冒号的 i18n YAML 值已加引号（见坑7）
@@ -461,6 +476,7 @@ NAT 场景下，若**自备公网 VPS**且不想用 Cloudflare Tunnel，使用 P
 
 ### 生产发版
 
+- [ ] Rails 项目已首先通过 `bundle exec rails zeitwerk:check`（非 Rails 跳过）
 - [ ] 本地迁移与依赖、前端构建前提已满足
 - [ ] `.env.production` / `.env.local` 已按需更新（含 `BACKEND_API_HOST`、`YOO_DEPLOY_VITE_API_URL`）
 - [ ] `./yoo deploy --docker -y` 成功，`prestart` 无报错
